@@ -219,7 +219,9 @@ if [ $SKIP_THIRDPARTY != true ]; then
 			export LDFLAGS="$LDFLAGS -L/opt/local/lib"
 		fi
 	fi
-		
+
+        GCC_COMMON_TARGET_CONFIGARGS="--disable-nls --enable-libstdcxx-dual-abi=no --disable-libstdcxx-verbose --enable-newlib-io-long-long --enable-newlib-io-long-double --enable-newlib-io-c99-formats --enable-newlib-io-pos-args"
+
 	# Components needed for targeting 68K: binutils, gcc
 	if [ $BUILD_68K != false ]; then
 		export CC=$HOST_C_COMPILER
@@ -236,7 +238,7 @@ if [ $SKIP_THIRDPARTY != true ]; then
 		# Build gcc for 68K
 		mkdir -p gcc-build
 		cd gcc-build
-		export target_configargs="--disable-nls --enable-libstdcxx-dual-abi=no --disable-libstdcxx-verbose"
+		export target_configargs="${GCC_COMMON_TARGET_CONFIGARGS}"
 		$SRC/gcc/configure --target=m68k-apple-macos --prefix=$PREFIX \
 				--enable-languages=c,c++ --with-arch=m68k --with-cpu=m68000 \
 				--disable-libssp MAKEINFO=missing
@@ -279,7 +281,7 @@ if [ $SKIP_THIRDPARTY != true ]; then
 		# Build gcc for PPC
 		mkdir -p gcc-build-ppc
 		cd gcc-build-ppc
-		export target_configargs="--disable-nls --enable-libstdcxx-dual-abi=no --disable-libstdcxx-verbose"
+		export target_configargs="${GCC_COMMON_TARGET_CONFIGARGS}"
 		$SRC/gcc/configure --target=powerpc-apple-macos --prefix=$PREFIX \
 			--enable-languages=c,c++ --disable-libssp --disable-lto MAKEINFO=missing
 		make -j$BUILD_JOBS
